@@ -4,6 +4,8 @@ Game Variables
 // Set a bunch of initial variables
 var message = "You're in a plane etc, in your pocket you have a stick of gum";
 var command;
+var commandPostVerb;
+var commandVerb;
 var feedbackMessage;
 var altitude = 30000;
 var currentRoom = 2;
@@ -13,14 +15,13 @@ var gameEnd = false;
 var availableRooms = new Array("cockpit", "galley", "cabin", "bathroom", "cargo hold");
 var inventory = new Array();
 var visibleItems = new Array();
-var availableItems = new Array("stick of gum", "parachute", "wrench", "fire extinguisher", "cargo net", "length of rope", "flare gun", "loafer", "cn of mountain dew");
+//var availableItems = new Array("stick of gum", "parachute", "wrench", "fire extinguisher", "cargo net", "length of rope", "flare gun", "loafer", "cn of mountain dew");
 var directions = new Array();
+//var availableDirections = new Array("forward", "backward", "down")
 var total = new Array();
-var availableDirections = new Array("forward", "backward", "down")
-
 
 /*-----------------------
-Set Inventory
+Set Starting Items
 -----------------------*/
 inventory[0] = "stick of gum";
 inventory[1] = "keys";
@@ -43,8 +44,7 @@ $( document ).ready(function() {
 	setItems();
 	dashboard();
 	totalCommands();
-
-
+	//outputHTML();
 });
 
 
@@ -60,10 +60,11 @@ $( "#commandForm" ).submit(function(event) {
 
 	// When the form is submitted, grab the value of the input text and set it to variable 'command'
 	command = $('#command').val();
+	// Set command to lowercase
+	command = command.toLowerCase();
 
-	// Print the command to the action output for testing
-	$('#action-output').html('You have decided to '+ command);
-
+	// Run functions
+	splitCommand();
 	negativeFeedback();
 	roomMover();
 	dashboard();
@@ -73,22 +74,25 @@ $( "#commandForm" ).submit(function(event) {
 	getItem();
 	totalCommands();
 	updateAltitude();
+	//outputHTML();
 
 	event.preventDefault();
 });
 
 
+function splitCommand() {
+	//split command. Look for GET and do what comes after it
+	commandVerb = command.split(" ", 1);
+	commandPostVerb = command.substr(command.indexOf(" ") + 1);	
+}
 
 
 function negativeFeedback() {
 	// Set negative feedback message for out-of-scope commands
-	
-	
-
 	for (var i = 0; i < total.length; i++) {
 
 		// Check command against all available commands
-		if (command == total[i]) {
+		if (commandPostVerb == total[i]) {
 			feedbackMessage = "";
 			$('#feedback-output').html(feedbackMessage);
 		} else {
@@ -96,7 +100,6 @@ function negativeFeedback() {
 			$('#feedback-output').html(feedbackMessage);
 		}
 	}
-
 	// Set negative feedback message for doing nothing
 	if (command == '') {
 		feedbackMessage = "You probably shouldn't waste time by doing nothing";
@@ -106,37 +109,39 @@ function negativeFeedback() {
 
 
 function roomMover() {
-	for (var i = 0; i < directions.length; i++) {
-		// Make sure we have a match to an available exit
-		if (command == directions[i]) {
+	if (commandVerb[0] == "move") {
+		for (var i = 0; i < directions.length; i++) {
+			// Make sure we have a match to an available exit
+			if (commandPostVerb == directions[i]) {
 
-			// Clear any negative feedback messages
-			feedbackMessage = "";
-			$('#feedback-output').html(feedbackMessage);
+				// Clear any negative feedback messages
+				feedbackMessage = "";
+				$('#feedback-output').html(feedbackMessage);
 
-			if (directions[i] == 'forward' && currentRoom != 0) {
-				currentRoom = currentRoom - 1;
-				$('#currentRoom-output').html(currentRoom);
-				// Trigger the function to update the plane GUI map
-				planeMarker();
-			} else if (directions[i] == 'down') {
-				currentRoom = currentRoom + 1;
-				$('#currentRoom-output').html(currentRoom);
-				// Trigger the function to update the plane GUI map
-				planeMarker();
-			}else if (directions[i] == 'up') {
-				currentRoom = currentRoom - 1;
-				$('#currentRoom-output').html(currentRoom);
-				// Trigger the function to update the plane GUI map
-				planeMarker();
-			} else if (directions[i] == 'backward' && currentRoom != 4) {
-				currentRoom = currentRoom + 1;
-				$('#currentRoom-output').html(currentRoom);
-				// Trigger the function to update the plane GUI map
-				planeMarker();
+				if (directions[i] == 'forward' && currentRoom != 0) {
+					currentRoom = currentRoom - 1;
+					$('#currentRoom-output').html(currentRoom);
+					// Trigger the function to update the plane GUI map
+					planeMarker();
+				} else if (directions[i] == 'down') {
+					currentRoom = currentRoom + 1;
+					$('#currentRoom-output').html(currentRoom);
+					// Trigger the function to update the plane GUI map
+					planeMarker();
+				}else if (directions[i] == 'up') {
+					currentRoom = currentRoom - 1;
+					$('#currentRoom-output').html(currentRoom);
+					// Trigger the function to update the plane GUI map
+					planeMarker();
+				} else if (directions[i] == 'backward' && currentRoom != 4) {
+					currentRoom = currentRoom + 1;
+					$('#currentRoom-output').html(currentRoom);
+					// Trigger the function to update the plane GUI map
+					planeMarker();
+				} 
 			} 
-		} 
-	}	
+		}	
+	}
 }
 
 function setItems() {
@@ -241,18 +246,32 @@ function setItems() {
 }
 
 function getItem() {
-	for (var i = 0; i < visibleItems.length; i++) {
-		// Make sure we have a match to a visible item
-		if (command == visibleItems[i]) {
-			inventory.push(visibleItems[i]);
+	// Only do this stuff if command is preceded by GET
+	if (commandVerb[0] == "get") {
+		// Check the visible items array by looping through it
+		for (var i = 0; i < visibleItems.length; i++) {
+			// Make sure our command matches a visible item
+			if (commandPostVerb == visibleItems[i]) {
+				// Add visible item to inventory
+				inventory.push(visibleItems[i]);
 
-			// Need to remove item from array
-			visibleItems[i] = '';
-			$('#inventory-output').html(inventory.join(', '));
-			$('#item-output').html(visibleItems.join(', '));
+				// Remove the added item from the visible item array
+				visibleItems[i] = '';
+				$('#inventory-output').html(inventory.join(', '));
+				$('#item-output').html(visibleItems.join(', '));
+			}
 		}
 	}
 }
+
+
+function useItem() {
+	// Only do this stuff if command is preceded by USE
+		// Check to make sure the item in commandPostVerb is in the inventory array
+			// Each item will need to show 'use' text, along with toggling boolians that solve the game puzzle
+
+}
+
 
 /*-----------------------
 Set GUI Plane Map 
@@ -284,8 +303,6 @@ function updateAltitude() {
 	altitude = altitude - altitudeLoss;
 	$('#altitude-output').html(altitude+' Feet');
 }
-
-
 
 
 ///////////// ROOM FUNCTIONS /////////////
@@ -330,9 +347,7 @@ function rooms() {
 		// available exits
 		directions = ['forward', 'backward'];
 
-		//for (var i = 0; i < directions.length; i++) {
-			$('#directions-output').html(directions.join(', '));
-		//}
+		$('#directions-output').html(directions.join(', '));
 	}
 
 	/*-----------------------
@@ -344,8 +359,8 @@ function rooms() {
 		$('#message-output').html(message);
 		
 		directions = ['forward', 'down'];
+		
 		$('#directions-output').html(directions.join(', '));
-	
 	}
 
 	/*-----------------------
@@ -359,15 +374,18 @@ function rooms() {
 		// available exits
 		directions = ['up'];
 
-		//for (var i = 0; i < directions.length; i++) {
-			$('#directions-output').html(directions.join(', '));
-		//}
+		$('#directions-output').html(directions.join(', '));
 	}
 }
 
 function totalCommands() {
 	// Compile all arrays into one for testing
-	  total = $.merge( $.merge( [], directions ), visibleItems );
-	  $('#totalCommands-output').html(total.join(', '));
+	total = $.merge( $.merge( [], directions ), visibleItems );
+	$('#totalCommands-output').html(total.join(', '));
 }
+
+// function outputHTML() {
+// 	$('#item-output').html(visibleItems.join(',   '));
+// 	$('#inventory-output').html(inventory.join(', '));
+// }
 
