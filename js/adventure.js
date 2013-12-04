@@ -16,76 +16,68 @@ var gameEnd = false;
 var cockpitDoor = false;
 var parachute = false;
 
-
 // Set arrays
-var availableRooms = new Array("cockpit", "galley", "cabin", "bathroom", "cargo hold");
+var availableRooms = new Array("Cockpit", "Galley", "Cabin", "Bathroom", "Cargo Hold");
 var inventory = new Array();
 var visibleItems = new Array();
 var directions = new Array();
 var total = new Array();
 
-/*-----------------------
-Set Starting Items
------------------------*/
+// Set Starting Items
 inventory[0] = "wrist watch";
 
+
 /*-----------------------
-Game Dashboard Output
+Onload functions
 -----------------------*/
-function dashboard() {
-        $('#message-output').html(message);
-        $('#altitude-output').html(altitude+' Feet');
-        $('#inventory-output').html(inventory.join(', '));
-        // $('#direction-output').html(directions);
-        $('#currentRoom-output').html('You are currently in the '+ availableRooms[currentRoom]);
-}
-
-
-
 $( document ).ready(function() {
         planeMarker();        
         setRooms();
-        dashboard();
+        display();
         totalCommands();
+
 });
-
-
-
-
-
 
 
 /*-----------------------
-Command Input Interface
+Submit functions
 -----------------------*/
 $( "#commandForm" ).submit(function(event) {
-		
-		// Run functions
-        commandHandling();
-        negativeFeedback();
-        roomMover();
-        
-        planeMarker();        
-        setRooms();
-        getItem();
-        useItem();
-        totalCommands();
-		updateAltitude();
-        dashboard();
-        event.preventDefault();
+	// Run functions
+    
+    commandHandling();
+    negativeFeedback();
+    roomMover();
+    planeMarker();        
+    setRooms();
+    getItem();
+    useItem();
+    totalCommands();
+	updateAltitude();
+    display();
+    gameEnded();
+    event.preventDefault();
 });
 
 
+/*-----------------------
+Functions
+-----------------------*/
 function commandHandling() {
 	// When the form is submitted, grab the value of the input text and set it to variable 'command'
-        command = $('#command').val();
-        // Set command to lowercase
-        command = command.toLowerCase();
-        //split command. Look for GET and do what comes after it
-        commandVerb = command.split(" ", 1);
-        commandPostVerb = command.substr(command.indexOf(" ") + 1);        
+    command = $('#command').val();
+    // Set command to lowercase
+    command = command.toLowerCase();
+    //split command. Look for GET and do what comes after it
+    commandVerb = command.split(" ", 1);
+    commandPostVerb = command.substr(command.indexOf(" ") + 1);        
 } 
 
+function display() {
+    $('#message-output').html(message);
+    $('#altitude-output').html(altitude+' Feet');
+    $('#inventory-output').html(inventory.join(', '));
+}
 
 function roomMover() {
 
@@ -317,11 +309,10 @@ function useItem() {
 				} else if (commandPostVerb == "parachute") {
                     message2 = message2 + ". Carefully, you strap the parachute to your back, making sure the buckles are cinched tight"
                     parachute = true;
-                }
-
-
-
-                else {
+                } else if (commandPostVerb == "can of mountain dew") {
+                    message2 = message2 + ". As you drink it, you hope it gives you the power to take things to the extreme. Instead, you die."
+                    parachute = true;
+                } else {
 					message2 = message2 + ". You succeed in wasting some time and looking like an idiot"
 				}
 				// Output the final message to the HTML
@@ -338,29 +329,51 @@ Set GUI Plane Map
 // Cockpit
 function planeMarker () {
         if (currentRoom == 0) {
-                $('#planeMarker').css('left', '30px');
+                $('#planeMarker').css('left', '0px');
+                // Grab the name of the room and display it above push pin
+                $('#planeMarker').html(availableRooms[currentRoom]);
         // Galley
         } else if (currentRoom == 1) {
-                $('#planeMarker').css('left', '65px');
+                $('#planeMarker').css('left', '35px');
+                // Grab the name of the room and display it above push pin
+                $('#planeMarker').html(availableRooms[currentRoom]);
         // Cabin
         } else if (currentRoom == 2) {
-                $('#planeMarker').css('left', '130px');
+                $('#planeMarker').css('left', '100px');
+                // Grab the name of the room and display it above push pin
+                $('#planeMarker').html(availableRooms[currentRoom]);
         // Bathroom
         } else if (currentRoom == 3) {
-                $('#planeMarker').css('left', '198px');
+                $('#planeMarker').css('left', '173px');
+                // Swap the plane blueprint to show above deck
                 $('#plane').css('background-image', "url('images/plane-upper.png')");
+                // Grab the name of the room and display it above push pin
+                $('#planeMarker').html(availableRooms[currentRoom]);
         // Below-deck Cargo Hold
         } else {
+                // Swap the plane blueprint to show below deck
                 $('#plane').css('background-image', "url('images/plane-lower.png')");
-                $('#planeMarker').css('left', '235px');
+                $('#planeMarker').css('left', '205px');
+                // Grab the name of the room and display it above push pin
+                $('#planeMarker').html(availableRooms[currentRoom]);
         }
 }
 
 function updateAltitude() {
-        // Update the altitude
+    // Update the altitude
+    if (gameEnd == false && altitude > 0) {
         var altitudeLoss = Math.floor((Math.random()*2000)+500);
         altitude = altitude - altitudeLoss;
+
+        // Keep altitude at 0 and set game end to true
+        if (altitude < 0) {
+            altitude = 0;
+            gameEnd = true;
+        }
+
+
         $('#altitude-output').html(altitude+' Feet');
+    } 
 }
 
 function totalCommands() {
@@ -390,4 +403,10 @@ function negativeFeedback() {
                 $('#feedback-output').html(feedbackMessage);
         }
 }  
+
+function gameEnded() {
+    if (gameEnd == true) {
+                $('#gameEnd-output').css('display', 'block');
+    }
+}
 

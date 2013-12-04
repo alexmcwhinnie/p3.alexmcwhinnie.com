@@ -3,6 +3,22 @@ p {
 	margin: 0px 0px 10px 0px;
 }
 
+body {
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 0.9em;
+}
+
+hr {
+	margin-top: 30px;
+	clear: both;
+	border-width: 0px;
+}
+
+#wrapper {
+	margin: auto;
+	width: 770px;
+}
+
 #tip {
 	color: #666666;
 	font-size: 0.8em;
@@ -27,14 +43,22 @@ p {
 
 #planeMarker {
 	position: absolute;
-	top: 130px;
+	top: 115px;
 	left: 100px;
 	background-image: url('images/plane-marker.png');
-	width: 20px;
-	height: 30px;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	width: 70px;
+	height: 45px;
+
+	font-size: 0.8em;
+	font-weight: bold;
+	color: #BE1E2D;
+	text-align: center;
 }
 
 #feedback-output {
+	margin-top: 5px;
 	color: #ff0000;
 }
 
@@ -44,24 +68,30 @@ p {
 
 #icon-visible {
 	background-image: url("images/optionsIcon-visible.png");
-	background-position: 0px 3px;	
 	background-repeat: no-repeat;
 }
 
 #icon-direction {
 	background-image: url("images/optionsIcon-direction.png");
-	background-position: 0px 3px;
 	background-repeat: no-repeat;
 }
 
 #icon-inventory {
 	background-image: url("images/optionsIcon-inventory.png");
-	background-position: 0px 3px;
 	background-repeat: no-repeat;
 }
 
 #icon-altitude {
 	background-image: url("images/optionsIcon-altitude.png");
-	background-position: 0px 3px;
 	background-repeat: no-repeat;
+}
+
+#gameEnd-output {
+	position: relative;
+	display: none;
+	width: 100%;
+	text-align: center;
+	color: #ff0000;
+	font-size: 1.5em;
+
 }
