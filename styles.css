@@ -3,6 +3,11 @@ p {
 	margin: 0px 0px 10px 0px;
 }
 
+#tip {
+	color: #666666;
+	font-size: 0.8em;
+}
+
 #leftColumn {
 	float: left;
 	width: 350px;
@@ -31,4 +36,32 @@ p {
 
 #feedback-output {
 	color: #ff0000;
+}
+
+.icons {
+	padding-left: 40px;
+}
+
+#icon-visible {
+	background-image: url("images/optionsIcon-visible.png");
+	background-position: 0px 3px;	
+	background-repeat: no-repeat;
+}
+
+#icon-direction {
+	background-image: url("images/optionsIcon-direction.png");
+	background-position: 0px 3px;
+	background-repeat: no-repeat;
+}
+
+#icon-inventory {
+	background-image: url("images/optionsIcon-inventory.png");
+	background-position: 0px 3px;
+	background-repeat: no-repeat;
+}
+
+#icon-altitude {
+	background-image: url("images/optionsIcon-altitude.png");
+	background-position: 0px 3px;
+	background-repeat: no-repeat;
 }

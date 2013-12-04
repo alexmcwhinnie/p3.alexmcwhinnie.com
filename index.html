@@ -20,37 +20,34 @@
 		<p id='message-output'></p>
 		<p id='messageItemUse-output'></p>
 
+		<div class ='icons' id ='icon-visible'>
+			<strong>You can see the following items:</strong>
+			<p id='item-output'></p>
+		</div>
 
-		<strong>You can see the following items:</strong>
-		<p id='item-output'></p>
+		<div class ='icons' id ='icon-direction'>
+			<strong>You observe the following exits:</strong>
+			<p id='directions-output'></p>
+		</div>
 
-		<strong>You observe the following exits:</strong>
-		<p id='directions-output'></p>
+		<div class ='icons' id ='icon-inventory'>
+			<strong>You are currently carrying the following:</strong>
+			<p id='inventory-output'></p>
+		</div>
 
-		<strong>You are currently carrying the following:</strong>
-		<p id='inventory-output'></p>
-
-
-		<p>
-			What would you like to do?
-			<br>
-			You are free to MOVE, GET items and USE items
-		</p>
+		<p>What would you like to do?</p>
+		<p id = 'tip'>You are free to MOVE, GET items and USE items</p>
 		<form id = 'commandForm'>
 			<input type='text' id='command'><input type='submit' value='Do it'>
 		</form>
 
 		<p id='feedback-output'></p>
 
-		<h3>Altitude</h3>
-		<p id='altitude-output'></p>
+		<div class ='icons' id ='icon-altitude'>
+			<strong>Altitude:</strong>
+			<p id='altitude-output'></p>
+		</div>
 		
-		
-		<h3>Total options</h3>
-		<p id='totalCommands-output'></p>
-		<h3>Action (testing)</h3>
-		<p id='currentRoom-output'></p>
-		<p id='action-output'></p>
 	</div>
 	<div id = 'rightColumn'>
 		<div id='plane'>

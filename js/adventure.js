@@ -10,24 +10,24 @@ var commandVerb;
 var feedbackMessage;
 var altitude = 30000;
 var currentRoom = 2;
+
+// Boolean tests
 var gameEnd = false;
 var cockpitDoor = false;
+var parachute = false;
 
 
 // Set arrays
 var availableRooms = new Array("cockpit", "galley", "cabin", "bathroom", "cargo hold");
 var inventory = new Array();
 var visibleItems = new Array();
-//var availableItems = new Array("stick of gum", "parachute", "wrench", "fire extinguisher", "cargo net", "length of rope", "flare gun", "loafer", "cn of mountain dew");
 var directions = new Array();
-//var availableDirections = new Array("forward", "backward", "down")
 var total = new Array();
 
 /*-----------------------
 Set Starting Items
 -----------------------*/
-inventory[0] = "stick of gum";
-inventory[1] = "keys";
+inventory[0] = "wrist watch";
 
 /*-----------------------
 Game Dashboard Output
@@ -36,7 +36,7 @@ function dashboard() {
         $('#message-output').html(message);
         $('#altitude-output').html(altitude+' Feet');
         $('#inventory-output').html(inventory.join(', '));
-        $('#direction-output').html(directions);
+        // $('#direction-output').html(directions);
         $('#currentRoom-output').html('You are currently in the '+ availableRooms[currentRoom]);
 }
 
@@ -64,14 +64,14 @@ $( "#commandForm" ).submit(function(event) {
         commandHandling();
         negativeFeedback();
         roomMover();
-        dashboard();
+        
         planeMarker();        
         setRooms();
         getItem();
         useItem();
         totalCommands();
 		updateAltitude();
-
+        dashboard();
         event.preventDefault();
 });
 
@@ -96,7 +96,9 @@ function roomMover() {
 
                 // Clear any negative feedback messages
                 feedbackMessage = "";
+                message = "";
                 $('#feedback-output').html(feedbackMessage);
+                $('#messageItemUse-output').html(message);
 
                 if (directions[i] == 'forward' && currentRoom != 0) {
 
@@ -107,6 +109,8 @@ function roomMover() {
                 	} else {
                 		currentRoom = currentRoom - 1;
                         $('#currentRoom-output').html(currentRoom);
+                        
+
                         // Trigger the function to update the plane GUI map
                         planeMarker();
 					}
@@ -129,7 +133,7 @@ function roomMover() {
                         planeMarker();
                 }
             }
-        }        
+        }       
     }
 }
 
@@ -174,7 +178,7 @@ function setRooms() {
         $('#directions-output').html(directions.join(', '));
 
         // Set and Display initial visible items
-        visibleItems = ['can of mountain dew', 'coaster', 'fire extinguisher'];
+        visibleItems = ['can of mountain dew', 'fire extinguisher'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
@@ -257,7 +261,7 @@ function setRooms() {
 		$('#directions-output').html(directions.join(', '));
 
         // Set and Display initial visible items
-        visibleItems = ['cargo net', 'wrench', 'rope'];
+        visibleItems = ['cargo net', 'wrench', 'keys'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
@@ -304,17 +308,24 @@ function useItem() {
 			if (commandPostVerb == inventory[i]) {
 
 				// Set a message to assist with narrative
-				message = "You use the " + inventory[i];
+				message2 = "You use the " + inventory[i];
 
 				if (commandPostVerb == "keys" && currentRoom == 1) {
 					// Append extra text to message
-					message = message + ". The door to the cockpit unlocks and swings open"
+					message2 = message2 + ". The door to the cockpit unlocks and swings open"
 					cockpitDoor = true;
-				} else {
-					message = message + ". You succeed in wasting some time and looking like an idiot"
+				} else if (commandPostVerb == "parachute") {
+                    message2 = message2 + ". Carefully, you strap the parachute to your back, making sure the buckles are cinched tight"
+                    parachute = true;
+                }
+
+
+
+                else {
+					message2 = message2 + ". You succeed in wasting some time and looking like an idiot"
 				}
 				// Output the final message to the HTML
-                $('#messageItemUse-output').html(message);
+                $('#messageItemUse-output').html(message2);
 			}
 		}
 	}
