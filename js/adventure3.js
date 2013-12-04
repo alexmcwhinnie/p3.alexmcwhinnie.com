@@ -35,7 +35,7 @@ Game Dashboard Output
 function dashboard() {
         $('#message-output').html(message);
         $('#altitude-output').html(altitude+' Feet');
-        $('#inventory-output').html(inventory.join(', '));
+          $('#inventory-output').html(inventory.join(', '));
         $('#direction-output').html(directions);
         $('#currentRoom-output').html('You are currently in the '+ availableRooms[currentRoom]);
 }
@@ -103,7 +103,7 @@ function roomMover() {
                 	// Check for door lock
                 	if (cockpitDoor == false && currentRoom == 1) {
                 		message = "You try to move forward, but the door is locked";
-                		$('#messageItemUse-output').html(message);
+                		$('messageItemUse-output').html(message);
                 	} else {
                 		currentRoom = currentRoom - 1;
                         $('#currentRoom-output').html(currentRoom);
@@ -314,7 +314,7 @@ function useItem() {
 					message = message + ". You succeed in wasting some time and looking like an idiot"
 				}
 				// Output the final message to the HTML
-                $('#messageItemUse-output').html(message);
+				$('#message-output').html(message);
 			}
 		}
 	}
