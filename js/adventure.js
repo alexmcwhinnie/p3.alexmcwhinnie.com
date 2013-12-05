@@ -13,6 +13,7 @@ var currentRoom = 2;
 
 // Boolean tests
 var gameEnd = false;
+var gameWon = false;
 var cockpitDoor = false;
 var parachute = false;
 
@@ -55,7 +56,7 @@ $( "#commandForm" ).submit(function(event) {
     totalCommands();
 	updateAltitude();
     display();
-    gameEnded();
+    gameStatus();
     event.preventDefault();
 });
 
@@ -253,7 +254,7 @@ function setRooms() {
 		$('#directions-output').html(directions.join(', '));
 
         // Set and Display initial visible items
-        visibleItems = ['cargo net', 'wrench', 'keys'];
+        visibleItems = ['cargo net', 'keys'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
@@ -311,7 +312,19 @@ function useItem() {
                     parachute = true;
                 } else if (commandPostVerb == "can of mountain dew") {
                     message2 = message2 + ". As you drink it, you hope it gives you the power to take things to the extreme. Instead, you die."
-                    parachute = true;
+                    gameEnd = true;
+                } else if (commandPostVerb == "flare gun") {
+                    if (currentRoom == 4) {
+                        //you blow a hole in the back of the plane and get sucked out
+                        if (parachute == true) {
+                            message2 = message2 + " and blow a hole in the back of the plane and get sucked out. Good thing you put on the parachute"
+                            gameWon = true;
+                        } else {
+                            message2 = message2 + " and blow a hole in the back of the plane and get sucked out. As you fall to your death, you regret not drinking the moutain dew"
+                        }
+                    } else {
+                        message2 = message2 + ". There is now a small fire in the "+availableRooms[currentRoom];
+                    }
                 } else {
 					message2 = message2 + ". You succeed in wasting some time and looking like an idiot"
 				}
@@ -328,35 +341,35 @@ Set GUI Plane Map
 -----------------------*/
 // Cockpit
 function planeMarker () {
-        if (currentRoom == 0) {
-                $('#planeMarker').css('left', '0px');
-                // Grab the name of the room and display it above push pin
-                $('#planeMarker').html(availableRooms[currentRoom]);
-        // Galley
-        } else if (currentRoom == 1) {
-                $('#planeMarker').css('left', '35px');
-                // Grab the name of the room and display it above push pin
-                $('#planeMarker').html(availableRooms[currentRoom]);
-        // Cabin
-        } else if (currentRoom == 2) {
-                $('#planeMarker').css('left', '100px');
-                // Grab the name of the room and display it above push pin
-                $('#planeMarker').html(availableRooms[currentRoom]);
-        // Bathroom
-        } else if (currentRoom == 3) {
-                $('#planeMarker').css('left', '173px');
-                // Swap the plane blueprint to show above deck
-                $('#plane').css('background-image', "url('images/plane-upper.png')");
-                // Grab the name of the room and display it above push pin
-                $('#planeMarker').html(availableRooms[currentRoom]);
-        // Below-deck Cargo Hold
-        } else {
-                // Swap the plane blueprint to show below deck
-                $('#plane').css('background-image', "url('images/plane-lower.png')");
-                $('#planeMarker').css('left', '205px');
-                // Grab the name of the room and display it above push pin
-                $('#planeMarker').html(availableRooms[currentRoom]);
-        }
+    if (currentRoom == 0) {
+        $('#planeMarker').css('left', '0px');
+        // Grab the name of the room and display it above push pin
+        $('#planeMarker').html(availableRooms[currentRoom]);
+    // Galley
+    } else if (currentRoom == 1) {
+        $('#planeMarker').css('left', '35px');
+        // Grab the name of the room and display it above push pin
+        $('#planeMarker').html(availableRooms[currentRoom]);
+    // Cabin
+    } else if (currentRoom == 2) {
+        $('#planeMarker').css('left', '100px');
+        // Grab the name of the room and display it above push pin
+        $('#planeMarker').html(availableRooms[currentRoom]);
+    // Bathroom
+    } else if (currentRoom == 3) {
+        $('#planeMarker').css('left', '173px');
+        // Swap the plane blueprint to show above deck
+        $('#plane').css('background-image', "url('images/plane-upper.png')");
+        // Grab the name of the room and display it above push pin
+        $('#planeMarker').html(availableRooms[currentRoom]);
+    // Below-deck Cargo Hold
+    } else {
+        // Swap the plane blueprint to show below deck
+        $('#plane').css('background-image', "url('images/plane-lower.png')");
+        $('#planeMarker').css('left', '205px');
+        // Grab the name of the room and display it above push pin
+        $('#planeMarker').html(availableRooms[currentRoom]);
+    }
 }
 
 function updateAltitude() {
@@ -370,43 +383,43 @@ function updateAltitude() {
             altitude = 0;
             gameEnd = true;
         }
-
-
         $('#altitude-output').html(altitude+' Feet');
     } 
 }
 
 function totalCommands() {
 	// Compile all arrays into one for testing
-	var preTotal = $.merge( $.merge( [], directions ), visibleItems );
-	total = $.merge( $.merge( [], preTotal ), inventory );
-
-	$('#totalCommands-output').html(total);
+	var preTotal = $.merge(directions,visibleItems);
+	total = $.merge(preTotal,inventory);
 }
 
 function negativeFeedback() {
-        // Set negative feedback message for out-of-scope commands
-        for (var i = 0; i < total.length; i++) {
-
-                // Check command against all available commands
-                if (commandPostVerb == total[i]) {
-                        feedbackMessage = "";
-                        $('#feedback-output').html(feedbackMessage);
-                } else {
-                        feedbackMessage = "That makes no sense";
-                        $('#feedback-output').html(feedbackMessage);
-                }
+    // Set negative feedback message for out-of-scope commands
+    var itemMatch = 0;
+    for (var i = 0; i < total.length; i++) {
+        // Check command against all available commands (var total)
+        if (commandPostVerb == total[i]) {
+            itemMatch = 1;
         }
-        // Set negative feedback message for doing nothing
-        if (command == '') {
-                feedbackMessage = "You probably shouldn't waste time by doing nothing";
-                $('#feedback-output').html(feedbackMessage);
-        }
+    }
+    if (itemMatch == 0) {
+        feedbackMessage = "That makes no sense";
+        $('#feedback-output').html(feedbackMessage);
+    } else if (command == "") {
+        feedbackMessage = "You probably shouldn't waste time by doing nothing";
+        $('#feedback-output').html(feedbackMessage);
+    }
 }  
 
-function gameEnded() {
+function gameStatus() {
     if (gameEnd == true) {
-                $('#gameEnd-output').css('display', 'block');
+        $('#gameEnd-output').html("Game Over!");
+        $('#gameEnd-output').css('display', 'block');
+    }
+    if (gameWon == true) {
+        $('#gameEnd-output').html("You Won!");
+        $('#gameEnd-output').css('display', 'block');
     }
 }
+
 
