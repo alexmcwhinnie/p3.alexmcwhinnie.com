@@ -2,7 +2,7 @@
 Game Variables
 -----------------------*/
 // Set a bunch of initial variables
-var message = "You're in a plane etc, in your pocket you have a stick of gum";
+var message;
 var command;
 var messageItemUse;
 var commandPostVerb;
@@ -134,7 +134,7 @@ function setRooms() {
     if (currentRoom == 0) {
             
         // Set story text for cockpit
-        message = 'You are standing in the cockpit. The instrument console appears to be destroyed, and The pilot is dead';
+        message = "You are standing in the " + availableRooms[currentRoom] + ". The instrument console appears to be destroyed, and The pilot is dead";
         $('#message-output').html(message);
 
         // available exits
@@ -162,7 +162,7 @@ function setRooms() {
 	} else if (currentRoom == 1) {
         
 		// Set story text for galley
-        message = 'You are standing in the galley. There is a rather empty looking wet bar';
+        message = "You are standing in the " + availableRooms[currentRoom] + ". There is a rather empty looking wet bar";
         $('#message-output').html(message);
 
         // available exits
@@ -191,7 +191,7 @@ function setRooms() {
 
 	} else if (currentRoom == 2) {
 		// Set story text for cabin
-        message ='This is the message for the cabin. There are couches...and a loafer';
+        message = "You are standing in the " + availableRooms[currentRoom] + ". This is the message for the cabin. There are couches...and a loafer";
         $('#message-output').html(message);
 
         // available exits
@@ -219,7 +219,8 @@ function setRooms() {
 	} else if (currentRoom == 3) {
 
         // Set story text for bathroom
-        message ='You are now in the bathroom. You see a small hatch in the floor';
+        message = "You are standing in the " + availableRooms[currentRoom] + ". You see a small hatch in the floor";
+
         $('#message-output').html(message);
         
         directions = ['forward', 'down'];
@@ -246,7 +247,7 @@ function setRooms() {
 	} else if (currentRoom == 4) {
 		
 		// Set story text for cargo hold
-        message ='You climb down the floor hatch into a narrow access tunnel leading to what appears to be the cargo hold. ';
+        message = "You climb down the floor hatch into a narrow access tunnel leading to what appears to be the " + availableRooms[currentRoom];
         $('#message-output').html(message);
 
         // available exits

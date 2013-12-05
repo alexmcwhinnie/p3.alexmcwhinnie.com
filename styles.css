@@ -1,27 +1,11 @@
-p {
-	padding: 0px;
-	margin: 0px 0px 10px 0px;
-}
-
 body {
 	font-family: Helvetica, arial, sans-serif;
 	font-size: 0.9em;
 }
 
-hr {
-	margin-top: 30px;
-	clear: both;
-	border-width: 0px;
-}
-
 #wrapper {
 	margin: auto;
 	width: 770px;
-}
-
-#tip {
-	color: #666666;
-	font-size: 0.8em;
 }
 
 #leftColumn {
@@ -34,6 +18,30 @@ hr {
 	width: 400px;
 }
 
+h1 {
+	background-image: url("images/logo.png");
+	width: 770px;
+	height: 54px;
+	margin-bottom: 40px;
+	text-indent: -9999px;
+}
+
+p {
+	padding: 0px;
+	margin: 0px 0px 10px 0px;
+}
+
+hr {
+	margin-top: 30px;
+	clear: both;
+	border-width: 0px;
+}
+
+#tip {
+	color: #666666;
+	font-size: 0.8em;
+}
+
 #plane {
 	position: relative;
 	background-image: url('images/plane-upper.png');
@@ -43,13 +51,13 @@ hr {
 
 #planeMarker {
 	position: absolute;
-	top: 115px;
+	top: 100px;
 	left: 100px;
 	background-image: url('images/plane-marker.png');
 	background-position: bottom;
 	background-repeat: no-repeat;
 	width: 70px;
-	height: 45px;
+	height: 60px;
 
 	font-size: 0.8em;
 	font-weight: bold;
@@ -64,6 +72,7 @@ hr {
 
 .icons {
 	padding-left: 40px;
+	height: 40px;
 }
 
 #icon-visible {
@@ -93,5 +102,4 @@ hr {
 	text-align: center;
 	color: #ff0000;
 	font-size: 1.5em;
-
 }
