@@ -467,11 +467,11 @@ function negativeFeedback() {
 }  
 
 function gameStatus() {
-    if (gameEnd == true) {
+    if (gameEnd == true && gameWon == false) {
         $('#gameStatus-output').html("You Died!");
         $('#gameStatus').css('display', 'block');
-    }
-    if (gameWon == true) {
+    } else if (gameWon == true) {
+        gameEnd = true;
         $('#gameStatus-output').html("You Escaped!");
         $('#gameStatus').css('display', 'block');
     }
