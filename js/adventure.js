@@ -4,7 +4,7 @@ Game Variables
 // Set a bunch of initial variables
 var message;
 var command;
-var messageItemUse;
+var messageItem;
 var commandPostVerb;
 var commandVerb;
 var feedbackMessage;
@@ -38,8 +38,7 @@ messageGalley = "You are standing in the galley. Visions of free mini booze and 
 messageCockpit = "You are standing in the Cockpit. The instrument console appears to be destroyed, and the pilots are dead. Well that sucks."
 
 messageUseWatch = "You check the time, which doesn’t seem to accomplish much except for wasting it."
-skymallURL = "A pierogi shaped Christmas ornament."
-messageUseSkymall = "You leaf through the pages of the skymall catalogue and laugh at the ridiculousness of some of the items. Who would buy such cra…OOHH! " + skymallURL.link("http://www.skymall.com/pierogi-ornament/CD3693.html?start=2&catid=10440#start=1") + " You make a mental note to get that for your mother-in-law. Sweet. One gift down. You will be the star of Christmas."
+messageUseSkymall = "You leaf through the pages of the skymall catalogue and laugh at the ridiculousness of some of the items. Who would buy such cra…OOHH! A pierogi shaped Christmas ornament. You make a mental note to get that for your mother-in-law. Sweet. One gift down. You will be the star of Christmas."
 messageUseSkymallBathroom = "You don’t know if it a pavlovian response,  but having a magazine coupled with proximity to a toilet just seems to get things moving. Feeling sassy, you decide to poop with the door open. Take that FAA!"
 messageUseNailClippers = "As you grasp the cool metal in your hands, you cannot help wonder if this piece of contraband was the cause of your predicament. You hang onto them in case you need a shiv, you know, for science."
 messageUseLoafer = "You throw the loafer down the aisle and laugh menacingly, and in your best Austin Powers impression say “who throws a shoe, honestly”. Unfortunately there is no one around to hear you and you start sobbing. You slowly get your shit together and decide to keep the shoe as a souvenir and contemplate a new career as a prop comic."
@@ -123,14 +122,14 @@ function roomMover() {
                 feedbackMessage = "";
                 message = "";
                 $('#feedback-output').html(feedbackMessage);
-                $('#messageItemUse-output').html(message);
+                $('#messageItem-output').html(message);
 
                 if (directions[i] == 'forward' && currentRoom != 0) {
 
                 	// Check for door lock
                 	if (cockpitDoor == false && currentRoom == 1) {
                 		message = "You try to move forward, but the door is locked";
-                		$('#messageItemUse-output').html(message);
+                		$('#messageItem-output').html(message);
                 	} else {
                 		currentRoom = currentRoom - 1;
                         $('#currentRoom-output').html(currentRoom);
@@ -162,6 +161,24 @@ function roomMover() {
     }
 }
 
+// Only show items if they arent already in inventory
+// For use inside 'setRooms'
+function checkVisibleItems() {
+    for (i = 0; i < visibleItems.length; i++) {
+        for (j = 0; j < inventory.length; j++) {
+
+            // Test visible items agains inventory
+            if (visibleItems[i] == inventory[j]) {
+                // You already have the item, clear it from the visible item array
+                visibleItems[i] = '';
+                // Output visible items again, post-filtering
+                $('#item-output').html(visibleItems);
+            }
+        }
+    }
+}
+
+// Set room text, exits, and visible items
 function setRooms() {
     if (currentRoom == 0) {
             
@@ -178,19 +195,8 @@ function setRooms() {
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
-        for (i = 0; i < visibleItems.length; i++) {
-            for (j = 0; j < inventory.length; j++) {
-
-                // Test visible items agains inventory
-                if (visibleItems[i] == inventory[j]) {
-                    // You already have the item, clear it from the visible item array
-                    console.log('match found: ' + visibleItems[i]);
-                    visibleItems[i] = '';
-                    // Output visible items again, post-filtering
-                    $('#item-output').html(visibleItems);
-                }
-            }
-        }
+        checkVisibleItems()
+        
 	} else if (currentRoom == 1) {
         
 		// Set story text for galley
@@ -207,19 +213,7 @@ function setRooms() {
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
-        for (i = 0; i < visibleItems.length; i++) {
-            for (j = 0; j < inventory.length; j++) {
-
-                // Test visible items agains inventory
-                if (visibleItems[i] == inventory[j]) {
-                    // You already have the item, clear it from the visible item array
-                    console.log('match found: ' + visibleItems[i]);
-                    visibleItems[i] = '';
-                    // Output visible items again, post-filtering
-                    $('#item-output').html(visibleItems);
-                }
-            }
-        }
+        checkVisibleItems()
 
 	} else if (currentRoom == 2) {
 		// Set story text for cabin
@@ -235,19 +229,8 @@ function setRooms() {
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
-        for (i = 0; i < visibleItems.length; i++) {
-            for (j = 0; j < inventory.length; j++) {
+        checkVisibleItems()
 
-                // Test visible items agains inventory
-                if (visibleItems[i] == inventory[j]) {
-                    // You already have the item, clear it from the visible item array
-                    console.log('match found: ' + visibleItems[i]);
-                    visibleItems[i] = '';
-                    // Output visible items again, post-filtering
-                    $('#item-output').html(visibleItems);
-                }
-            }
-        }
 	} else if (currentRoom == 3) {
 
         // Set story text for bathroom
@@ -263,19 +246,8 @@ function setRooms() {
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
-        for (i = 0; i < visibleItems.length; i++) {
-            for (j = 0; j < inventory.length; j++) {
+        checkVisibleItems()
 
-                // Test visible items agains inventory
-                if (visibleItems[i] == inventory[j]) {
-                    // You already have the item, clear it from the visible item array
-                    console.log('match found: ' + visibleItems[i]);
-                    visibleItems[i] = '';
-                    // Output visible items again, post-filtering
-                    $('#item-output').html(visibleItems);
-                }
-            }
-        }
 	} else if (currentRoom == 4) {
 		
 		// Set story text for cargo hold
@@ -291,19 +263,7 @@ function setRooms() {
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
-        for (i = 0; i < visibleItems.length; i++) {
-            for (j = 0; j < inventory.length; j++) {
-
-                // Test visible items agains inventory
-                if (visibleItems[i] == inventory[j]) {
-                    // You already have the item, clear it from the visible item array
-                    console.log('match found: ' + visibleItems[i]);
-                    visibleItems[i] = '';
-                    // Output visible items again, post-filtering
-                    $('#item-output').html(visibleItems);
-                }
-            }
-        }
+        checkVisibleItems()
     }
 }
 
@@ -314,8 +274,13 @@ function getItem() {
         for (var i = 0; i < visibleItems.length; i++) {
             // Make sure our command matches a visible item
             if (commandPostVerb == visibleItems[i]) {
+                
                 // Add visible item to inventory
                 inventory.push(visibleItems[i]);
+
+                // Set a message to assist with narrative
+                message2 = "You take the " + visibleItems[i] +". ";
+                $('#messageItem-output').html(message2);
 
                 // Remove the added item from the visible item array
                 visibleItems[i] = '';
@@ -390,7 +355,7 @@ function useItem() {
 					message2 = message2 + "You succeed in wasting some time"
 				}
 				// Output the final message to the HTML
-                $('#messageItemUse-output').html(message2);
+                $('#messageItem-output').html(message2);
 			}
 		}
 	}
@@ -483,7 +448,6 @@ function negativeFeedback() {
     for (var i = 0; i < inventory.length; i++) {
         if (commandPostVerb == inventory[i] && commandVerb == "use") {
             itemMatch = 1;
-            console.log(inventory);
         }
     }
 
