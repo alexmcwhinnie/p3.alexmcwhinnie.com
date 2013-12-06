@@ -30,7 +30,7 @@ var total = new Array();
 inventory[0] = "wrist watch";
 
 // Set messages
-messageOpening = "You wake up disoriented, head pounding, wearing nothing but tattered jeans and a shirt that isn’t even yours. The taste of whiskey and regret thick on your tongue. You pat yourself down and realize all you have on you is a wrist watch and a load of regret. Suddenly you realize you are on an out of control plane plummeting to your death. What do you do?"
+messageOpening = "You wake up disoriented, head pounding, wearing nothing but tattered jeans and a shirt that isn’t even yours. The taste of whiskey and regret are thick on your tongue. You pat yourself down and realize all you have on you is a wrist watch and a load of regret. Suddenly you notice you are on an out of control plane plummeting to your death. What do you do?"
 messageCabin = "You are standing in the cabin, empty except for some scattered debris. All of the emergency oxygen masks have been deployed except for yours. Typical."
 messageBathroom = "You are standing in the bathroom, not surprisingly, there was no line.  Huh. There is a small hatch on the floor. How could you never have noticed that before. You ponder its purpose, poop hatch or something cooler?! Only one way to find out…"
 messageCargo = "Whoa. You climb down the floor hatch into a narrow access tunnel leading to what appears to be the Cargo Hold. Sadly, no cargo to explore. Just empty and cold. So very cold. You wonder if this is because there is less insulation down here or something. You really should have paid more attention when watching Executive Decision. "
