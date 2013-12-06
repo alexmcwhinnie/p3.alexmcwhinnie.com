@@ -191,12 +191,12 @@ function setRooms() {
 		$('#directions-output').html(directions.join(', '));
 
 		// Set and Display initial visible items
-        visibleItems = ['container of noodles', 'flare gun', 'parachute'];
+        visibleItems = ['container of noodles', 'flare gun'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
         checkVisibleItems()
-        
+
 	} else if (currentRoom == 1) {
         
 		// Set story text for galley
@@ -209,7 +209,7 @@ function setRooms() {
         $('#directions-output').html(directions.join(', '));
 
         // Set and Display initial visible items
-        visibleItems = ['can of mountain dew', 'fire extinguisher'];
+        visibleItems = ['can of mountain dew', 'fire extinguisher', 'parachute'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
@@ -468,11 +468,11 @@ function negativeFeedback() {
 
 function gameStatus() {
     if (gameEnd == true) {
-        $('#gameStatus-output').html("Game Over!");
+        $('#gameStatus-output').html("You Died!");
         $('#gameStatus').css('display', 'block');
     }
     if (gameWon == true) {
-        $('#gameStatus-output').html("You Won!");
+        $('#gameStatus-output').html("You Escaped!");
         $('#gameStatus').css('display', 'block');
     }
 }
