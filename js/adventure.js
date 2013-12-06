@@ -38,7 +38,8 @@ messageGalley = "You are standing in the galley. Visions of free mini booze and 
 messageCockpit = "You are standing in the Cockpit. The instrument console appears to be destroyed, and the pilots are dead. Well that sucks."
 
 messageUseWatch = "You check the time, which doesn’t seem to accomplish much except for wasting it."
-messageUseSkymall = "You leaf through the pages of the skymall catalogue and laugh at the ridiculousness of some of the items. Who would buy such cra…OOHH! A pierogi shaped Christmas ornament. You make a mental note to get that for your mother-in-law. Sweet. One gift down. You will be the star of Christmas."
+skymallURL = "A pierogi shaped Christmas ornament."
+messageUseSkymall = "You leaf through the pages of the skymall catalogue and laugh at the ridiculousness of some of the items. Who would buy such cra…OOHH! " + skymallURL.link("http://www.skymall.com/pierogi-ornament/CD3693.html?start=2&catid=10440#start=1") + " You make a mental note to get that for your mother-in-law. Sweet. One gift down. You will be the star of Christmas."
 messageUseSkymallBathroom = "You don’t know if it a pavlovian response,  but having a magazine coupled with proximity to a toilet just seems to get things moving. Feeling sassy, you decide to poop with the door open. Take that FAA!"
 messageUseNailClippers = "As you grasp the cool metal in your hands, you cannot help wonder if this piece of contraband was the cause of your predicament. You hang onto them in case you need a shiv, you know, for science."
 messageUseLoafer = "You throw the loafer down the aisle and laugh menacingly, and in your best Austin Powers impression say “who throws a shoe, honestly”. Unfortunately there is no one around to hear you and you start sobbing. You slowly get your shit together and decide to keep the shoe as a souvenir and contemplate a new career as a prop comic."
@@ -173,7 +174,7 @@ function setRooms() {
 		$('#directions-output').html(directions.join(', '));
 
 		// Set and Display initial visible items
-        visibleItems = ['container of noodles' , 'flare gun', 'parachute'];
+        visibleItems = ['container of noodles', 'flare gun', 'parachute'];
         $('#item-output').html(visibleItems.join(', '));
 
         // Only show items if they arent already in inventory
