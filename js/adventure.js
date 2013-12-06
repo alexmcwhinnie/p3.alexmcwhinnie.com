@@ -36,7 +36,6 @@ $( document ).ready(function() {
         setRooms();
         display();
         totalCommands();
-
 });
 
 
@@ -44,22 +43,26 @@ $( document ).ready(function() {
 Submit functions
 -----------------------*/
 $( "#commandForm" ).submit(function(event) {
-	// Run functions
-    
-    commandHandling();
-    negativeFeedback();
-    roomMover();
-    planeMarker();        
-    setRooms();
-    getItem();
-    useItem();
-    totalCommands();
-	updateAltitude();
-    display();
+    // Run functions
+    if (gameEnd == false) {
+        commandHandling();
+        negativeFeedback();
+        roomMover();
+        planeMarker();        
+        setRooms();
+        getItem();
+        useItem();
+        totalCommands();
+        updateAltitude();
+        display();
+    }
     gameStatus();
     event.preventDefault();
 });
 
+$( "#reload" ).click(function() {
+    location.reload();
+});
 
 /*-----------------------
 Functions
@@ -82,7 +85,7 @@ function display() {
 
 function roomMover() {
 
-    if (commandVerb[0] == "move") {
+    if (commandVerb[0] == "move" || commandVerb[0] == "go") {
         for (var i = 0; i < directions.length; i++) {
             // Make sure we have a match to an available exit
             if (commandPostVerb == directions[i]) {
@@ -277,7 +280,7 @@ function setRooms() {
 
 function getItem() {
     // Only do this stuff if command is preceded by GET
-    if (commandVerb[0] == "get") {
+    if (commandVerb[0] == "get" || commandVerb[0] == "take") {
         // Check the visible items array by looping through it
         for (var i = 0; i < visibleItems.length; i++) {
             // Make sure our command matches a visible item
@@ -399,7 +402,7 @@ function negativeFeedback() {
     var itemMatch = 0;
     for (var i = 0; i < total.length; i++) {
         // Check command against all available commands (var total)
-        if (commandPostVerb == total[i]) {
+        if (commandPostVerb == total[i] && (commandVerb == "get" || commandVerb == "take" || commandVerb == "move" || commandVerb == "go" || commandVerb == "use")) {
             itemMatch = 1;
         }
     }
@@ -414,12 +417,12 @@ function negativeFeedback() {
 
 function gameStatus() {
     if (gameEnd == true) {
-        $('#gameEnd-output').html("Game Over!");
-        $('#gameEnd-output').css('display', 'block');
+        $('#gameStatus-output').html("Game Over!");
+        $('#gameStatus').css('display', 'block');
     }
     if (gameWon == true) {
-        $('#gameEnd-output').html("You Won!");
-        $('#gameEnd-output').css('display', 'block');
+        $('#gameStatus-output').html("You Won!");
+        $('#gameStatus').css('display', 'block');
     }
 }
 

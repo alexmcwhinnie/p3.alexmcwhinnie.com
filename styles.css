@@ -4,6 +4,7 @@ body {
 }
 
 #wrapper {
+	position: relative;
 	margin: auto;
 	width: 770px;
 }
@@ -20,10 +21,14 @@ body {
 
 h1 {
 	background-image: url("images/logo.png");
-	width: 770px;
-	height: 54px;
-	margin-bottom: 40px;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 85px;
 	text-indent: -9999px;
+	
+	border-bottom-width: thin;
+	border-bottom-style: dashed;
+	border-bottom-color: #F00;
 }
 
 p {
@@ -95,11 +100,33 @@ hr {
 	background-repeat: no-repeat;
 }
 
-#gameEnd-output {
-	position: relative;
-	display: none;
+#gameStatus {
+	position: absolute;
+	top: 100px;
 	width: 100%;
+	display: none;
 	text-align: center;
+	background-color: #ffffff;
+	border-style: solid;
+	border-width: thin;
+	padding: 10px;
+	z-index: 10;
+}
+
+#gameStatus #gameStatus-output{
 	color: #ff0000;
 	font-size: 1.5em;
+}
+
+#gameStatus #reload {
+	cursor: pointer;
+	font-size: 1em;
+}
+
+a:link, a:visited {
+	color: #333333;
+}
+
+a:hover {
+	color: #ff0000;
 }
